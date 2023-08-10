@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ксюня</title>
+  <meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
+  <meta name="author" content="Vincent Garreau" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" media="screen" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  // Функция для показа приветственного уведомления
+  function showWelcomeAlert() {
+    Swal.fire({
+  title: 'Ксюня',
+  color:'red',
+  width:1000,
+  background:'rgb(203, 186, 196)',
+  footer: 'Ты умичка и справишься без подсказок )',
+  imageUrl: 'img/5.gif',
+  allowOutsideClick:false,
+  allowEscapeKey:false,
+  showConfirmButton:false,
+  timer:9000,
+  imageWidth: 700,
+  imageHeight: 500,
+  imageAlt: '',
+  customClass: {
+    footer:'text2',
+    confirmButton: 'confirm',
+    popup: 'swalcont',
+    title: 'textswal',
+    image: 'rounded-image' // Применяем стили к изображению через класс
+  },
+  backdrop: `
+    rgb(142,109,129,0.6)
+    url("/images/nyan-cat.gif")
+    left top
+    no-repeat
+  `
+  
+})
+  }
+
+  // Вызывать функцию после полной загрузки страницы
+  window.onload = function() {
+    showWelcomeAlert();
+  };
+</script>
+  <style>
+    * {
+  -webkit-tap-highlight-color: transparent;
+}
+    .canvas-container {
+      bottom: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      z-index:200;
+      position:relative;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      box-shadow: inset 10px 10px 10px rgba(0,0,0,0.05),
+    15px 25px 10px rgba(0,0,0,0.1),
+    15px 20px 20px rgba(0,0,0,0.05),
+    inset -10px -10px 15px rgba(255,255,255,0.9);
+     /* box-shadow:0 0 90px -35px darkred, inset 0 0 15px 3px rgb(199, 162, 162);*/
+    }
+.rounded-image{
+  border-radius: 75px;
+  border: #b09c9c 1px solid;
+  box-shadow:
+   0 1px 4px rgba(112, 70, 70, 0.3),
+   -23px 0 20px -23px rgba(61, 44, 44, 0.8),
+   23px 0 20px -23px rgba(62, 34, 34, 0.8);
+  margin-top: 150px; 
+  z-index: 19;
+}
+.textswal{
+  display: flex;
+  top:-690px;
+  font-size: 80px;
+  color: #792a2a
+
+}
+.inputswal{
+  background-color: #f8f5f5;
+}
+.text9{
+  color: #816262;
+}
+.confirm{
+  background-color: #792a2a;
+}
+.swalcont{
+  border-radius: 50px;
+  height: 800px;
+  box-shadow:
+   0 1px 4px rgba(112, 70, 70, 0.3),
+   -23px 0 20px -23px rgba(61, 44, 44, 0.8),
+   23px 0 20px -23px rgba(62, 34, 34, 0.8);
+}
+.text2{
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 30px;
+  margin-top: -180px;
+  color: #9b6666;
+  width: 650px;
+  z-index: 1;
+}
+    .canvas {
+      z-index:20;
+      position:relative;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      border-radius: 50%;
+    }
+
+    .hidden-text {
+      display: none;
+      color:;
+      z-index: 500;
+      font-size: 48px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* CSS для каждого текстового блока с разным цветом */
+    #blackText { color:#f4bbbb; }
+    #blueText { color: #faf2f2; width:80%;}
+    #redText { color: #faf2f2; }
+    #text1 { color:#faf2f2; }
+    #text2 { color:#faf2f2; }
+    #text3 { color:#faf2f2; }
+    #text4 { color: #faf2f2; }
+    #text5 { color: #faf2f2; }
+
+    /* Стилизация контейнера для кнопок */
+    .buttons-container {
+      position: absolute;
+      top: calc(100% + 30px); /* Смещение контейнера ниже холста */
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+    }
+
+    /* Стилизация кнопок */
+    .buttons-container button {
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      height: 110px;
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+      border-radius: ;
+      
+      cursor: pointer;
+      margin: 5px;
+    
+    }
+
+
+    /* Дополнительные стили для каждой кнопки */
+    #blackButton { color: black;padding-bottom:30px; }
+    #blueButton { color: blue; padding-bottom: 29px;}
+    #redButton { color: red; padding-bottom: 29px;}
+    #button1 { color: purple; padding-bottom: 30px;}
+    #button2 { color: orange; padding-bottom: 29px;}
+    #button3 { color: khaki;padding-bottom: 29px; }
+    #button4 { color: brown; padding-bottom: 29px;}
+    #button5 { color: aqua; padding-bottom: 25px;}
+    button {z-index: 1;
+  position: relative;
+  display: flex;
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+  outline: none;
+  min-width:auto;
+  min-height: 50px;
+  font-size:50px;
+  border-radius: 52% 48% 30% 70% / 51% 54% 46% 49%;
+  background: radial-gradient(#beadad, #ffffff);
+  box-shadow: inset 10px 10px 10px rgba(0,0,0,0.05),
+    15px 25px 10px rgba(0,0,0,0.1),
+    15px 20px 20px rgba(0,0,0,0.05),
+    inset -10px -10px 15px rgba(255,255,255,0.9);
+  /*box-shadow: 0 0 5px 2px #ffffff inset, 0 0 3px 1px  #e1c3c3;*/
+}
+button:hover {
+  background: #dcdcdc linear-gradient(#fff, #dcdcdc);
+  box-shadow: 0 0 0 0 #c6b3b3 inset, 
+  15px 25px 10px rgba(0,0,0,0.1),
+    15px 20px 20px rgba(0,0,0,0.05),
+  0 0  1px 1px #dfc0c0;
+}
+button:active {
+  background: none;
+    box-shadow: 0 0 3px 3px #b57878 inset, 0 1px 1px rgba(130, 95, 95, 0.5) inset, 0 2px 2px #f9ebeb;
+}
+img{
+  width: 500px;
+  : #f4bbbb;
+}
+.img{
+  width: 80px;
+  padding-top: 10px;
+  opacity: 0.6;
+}
+.gif{
+  border-radius: 50%;
+  width: 80px;
+
+}
+.title3{
+  margin: 50px;
+  color: #b31010;
+  font-size: 50px;
+}
+.popup{
+  background-color: #e6d5d5;
+  color: #9c1313;
+  border-radius: 50px;
+  box-shadow:
+   0 1px 4px rgba(112, 70, 70, 0.3),
+   -23px 0 20px -23px rgba(61, 44, 44, 0.8),
+   23px 0 20px -23px rgba(62, 34, 34, 0.8);
+}
+.popup2{
+  background-color: #e6d5d5;
+  color: #ba0c0c;
+  width: 700px; 
+  height: 1000px;
+  border-radius: 50px;
+  padding-bottom: 80px;
+  box-shadow:
+   0 1px 4px rgba(112, 70, 70, 0.3),
+   -23px 0 20px -23px rgba(61, 44, 44, 0.8),
+   23px 0 20px -23px rgba(62, 34, 34, 0.8);
+}
+.image7{
+  width: 200px;
+}
+.icon2{
+  width: 200px;
+  height: 200px;
+  font-size: 70px;
+  background-color: #ebdcea;
+  color: #b34343;
+}
+.icon3{
+ width: 15px;
+ height: 15px;
+ font-size: 50px;
+}
+.a77{
+  width: 35px;
+}
+iframe{
+  border-radius: 35px;
+  box-shadow:
+   0 1px 4px rgba(112, 70, 70, 0.3),
+   -33px 0 30px -33px rgba(61, 44, 44, 0.8),
+   33px 0 30px -33px rgba(62, 34, 34, 0.8);
+}
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="canvas-container" id="canvasContainer">
+    <canvas class="canvas" id="paintCanvas"></canvas>
+    <div class="hidden-text" id="blackText"><img src="img/1.png" alt=""></div>
+    <div class="hidden-text" id="blueText"><img src="img/2.png" alt=""></div>
+    <div class="hidden-text" id="redText"><img src="img/3.png" alt=""></div>
+    <div class="hidden-text" id="text1"><img src="img/4.png"></div>
+    <div class="hidden-text" id="text2"><img src="img/5.png" alt=""></div>
+    <div class="hidden-text" id="text3"><img src="img/6.png" alt=""></div>
+    <div class="hidden-text" id="text4"><img src="img/7.png" alt=""></div>
+    <div class="hidden-text" id="text5"><img src="img/8.png" alt=""></div>
+    <div class="buttons-container">
+      <button id="blackButton" onclick="changeBrushColor('#3498db', 'blackText')"><img class="img" src="img/21.png" alt=""></button>
+      <button id="blueButton" onclick="changeBrushColor('olive', 'blueText')"><img class="img" src="img/22.png" alt=""></button>
+      <button id="redButton" onclick="changeBrushColor('red', 'redText')"><img class="img" src="img/23.png" alt=""></button>
+      <button id="button1" onclick="changeBrushColor('#a14f08', 'text1')"><img class="img" src="img/24.png" alt=""></button>
+      <div class="final-button-container" style="display: none;">
+        <button id="finalButton"><img  class="gif" src="img/3.gif" alt=""></button>
+      </div>
+      <button id="button2" onclick="changeBrushColor('#8e6d82', 'text2')"><img class="img" src="img/25.png" alt=""></button>
+      <button id="button3" onclick="changeBrushColor('#2c646c', 'text3')"><img class="img" src="img/26.png" alt=""></button>
+      <button id="button4" onclick="changeBrushColor('brown', 'text4')"><img class="img" src="img/27.png" alt=""></button>
+      <button id="button5" onclick="changeBrushColor('#b508b5', 'text5')"><img class="img" src="img/28.png" alt=""></button>
+    
+    </div>
+   
+  </div>
+  
+  
+<!-- ... (ваш текущий HTML-код) ... -->
+
+<!-- Код для показа новой кнопки после нажатия всех 8 кнопок -->
+<script>
+// Объявляем объект для хранения состояний кнопок
+const buttonStates = {
+  blackButton: false,
+  blueButton: false,
+  redButton: false,
+  button1: false,
+  button2: false,
+  button3: false,
+  button4: false,
+  button5: false
+};
+
+let uniquePressedButtons = 0;
+
+function updateButtonState(buttonId) {
+  if (!buttonStates[buttonId]) {
+    buttonStates[buttonId] = true;
+    uniquePressedButtons++;
+  }
+
+  if (uniquePressedButtons === 8) {
+    showFinalButton();
+  }
+}
+
+
+// ...
+
+document.getElementById('blackButton').addEventListener('click', () => updateButtonState('blackButton'));
+document.getElementById('blueButton').addEventListener('click', () => updateButtonState('blueButton'));
+document.getElementById('redButton').addEventListener('click', () => updateButtonState('redButton'));
+document.getElementById('button1').addEventListener('click', () => updateButtonState('button1'));
+document.getElementById('button2').addEventListener('click', () => updateButtonState('button2'));
+document.getElementById('button3').addEventListener('click', () => updateButtonState('button3'));
+document.getElementById('button4').addEventListener('click', () => updateButtonState('button4'));
+document.getElementById('button5').addEventListener('click', () => updateButtonState('button5'));
+
+document.getElementById('finalButton').addEventListener('click', showFinalAlert);
+
+function resetButtonStates() {
+  for (const buttonId in buttonStates) {
+    buttonStates[buttonId] = false;
+  }
+  uniquePressedButtons = 0;
+  hideFinalButton();
+}
+function hideFinalButton() {
+  const finalButtonContainer = document.querySelector('.final-button-container');
+  finalButtonContainer.style.display = 'none';
+}
+document.getElementById('finalButton').addEventListener('click', () => {
+  resetButtonStates();
+  hideFinalButton();
+  showFinalAlert();
+});
+  function showFinalButton() {
+  const finalButtonContainer = document.querySelector('.final-button-container');
+  finalButtonContainer.style.display = 'block';
+}
+
+function showFinalAlert() {
+  function askQuestion() {
+    Swal.fire({
+      title: 'Ты удивляешь!',
+      html: '<b class="text9" >Сколько во всех сообщениях суммарно картинок <img class="a77" src="img/77.png"> <img class="a77" src="img/78.png">вставлено в текст?</b>',
+      input: 'text',
+      customClass: {
+    popup: 'popup',
+    title: 'title3',
+    input: 'inputswal',
+  },
+      confirmButtonText: 'Проверить',
+      showCancelButton: true,
+      confirmButtonColor: '#792a2a',
+      allowOutsideClick: false,
+      imageUrl: 'img/4.gif',
+      imageWidth:300,
+      backdrop: `
+    rgb(142,109,129,0.6)
+    url("/images/nyan-cat.gif")
+    left top
+    no-repeat
+  `,
+      preConfirm: (answer) => {
+        if (answer === '37') {
+      Swal.fire({
+        title: 'Правильно!',
+        html: '<b class="text9"> Люблю тебя очень !</b>',
+        imageUrl: 'img/6.gif',
+        allowOutsideClick:false,
+        confirmButtonColor:'brown',
+        customClass: {
+          icon: 'icon3',
+          popup: 'popup',
+          image: 'image7',
+        },
+      }).then((result) => {
+  if (result.isConfirmed) {
+    // Показываем второе уведомление с видео
+    Swal.fire({
+      title: 'Ксюша ты самая лучшая на этом свете',
+      html: '<iframe width="550" height="550" src="img/1.mp4" frameborder="0" allowfullscreen></iframe>',
+      showCancelButton: false,
+      allowOutsideClick: false,
+      confirmButtonColor: 'brown',
+      showConfirmButton: false, // Скрываем кнопку "Подтвердить"
+      backdrop: `
+    rgb(142,109,129,0.6)
+    url("/images/nyan-cat.gif")
+    left top
+    no-repeat
+  `,
+      customClass: {
+        popup: 'popup2',
+        title: 'title3',
+      },
+      didOpen: () => {
+        // Устанавливаем таймер для показа кнопки "Выйти" через 3 минуты
+        setTimeout(() => {
+          Swal.update({
+            showConfirmButton: true,
+            confirmButtonText: 'Выйти',
+            confirmButtonColor: 'brown',
+          });
+        }, 240000);
+      }
+    });
+  }
+});
+
+    } else {
+      Swal.fire({
+        title: 'Ксюня ',
+        html: '<b class="text9">Придется пересчитать их</b>',
+        allowOutsideClick: false,
+        confirmButtonColor: '#792a2a',
+        iconHtml: '🔍',
+        customClass: {
+          icon: 'icon2',
+          popup: 'popup',
+        },
+          }).then(() => {
+            askQuestion(); // Задаем вопрос заново при неверном ответе
+          });
+          
+        }
+      }
+    });
+  }
+
+  askQuestion();
+}
+
+
+
+</script>
+<script src="particles.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  var count_particles, stats, update;
+  stats = new Stats;
+  stats.setMode(0);
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.top = '0px';
+  document.body.appendChild(stats.domElement);
+  count_particles = document.querySelector('.js-count-particles');
+  update = function() {
+    stats.begin();
+    stats.end();
+    if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+      count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+    }
+    requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+</script>
+<script>
+  const canvasContainer = document.getElementById('canvasContainer');
+ const canvas = document.getElementById('paintCanvas');
+ const ctx = canvas.getContext('2d');
+ const hiddenTexts = document.querySelectorAll('.hidden-text');
+ const buttons = ['blackButton', 'blueButton', 'redButton', 'button1', 'button2', 'button3', 'button4', 'button5'];
+
+ canvas.width = 600;
+ canvas.height = 600;
+
+ let isPainting = false;
+ let lastX = 0;
+ let lastY = 0;
+ let activeText = null;
+ let brushColor = '#3498db'; // Начальный цвет закрашивания
+
+ canvas.addEventListener('mousedown', startPainting);
+ canvas.addEventListener('mousemove', paint);
+ canvas.addEventListener('mouseup', stopPainting);
+ canvas.addEventListener('mouseleave', stopPainting);
+
+ canvas.addEventListener('touchstart', startPainting);
+ canvas.addEventListener('touchmove', paint);
+ canvas.addEventListener('touchend', stopPainting);
+ canvas.addEventListener('touchcancel', stopPainting);
+
+ function startPainting(e) {
+   isPainting = true;
+   const { clientX, clientY } = e.touches ? e.touches[0] : e;
+   const { offsetX, offsetY } = getCanvasCoordinates(clientX, clientY);
+   lastX = offsetX;
+   lastY = offsetY;
+   paint(e);
+ }
+
+ function stopPainting() {
+   isPainting = false;
+ }
+
+ function paint(e) {
+   if (!isPainting) return;
+
+   const { clientX, clientY } = e.touches ? e.touches[0] : e;
+   const { offsetX, offsetY } = getCanvasCoordinates(clientX, clientY);
+
+   ctx.strokeStyle = brushColor;
+   ctx.lineWidth = 85;
+   ctx.lineCap = 'round';
+   ctx.beginPath();
+   ctx.moveTo(lastX, lastY);
+   ctx.lineTo(offsetX, offsetY);
+   ctx.stroke();
+
+   lastX = offsetX;
+   lastY = offsetY;
+
+   // Показываем текст по мере закрашивания
+   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+   const pixelData = imageData.data;
+
+   // Проверяем, есть ли закрашенные пиксели на холсте
+   const isMaskEmpty = !pixelData.some((alpha) => alpha > 0);
+
+   if (isMaskEmpty) {
+     // Если холст пуст, скрываем активный текст
+     if (activeText) {
+       activeText.style.display = 'none';
+     }
+   } else {
+     // Если холст не пуст, показываем активный текст
+     activeText.style.display = 'block';
+   }
+ }
+
+ function getCanvasCoordinates(x, y) {
+   const canvasRect = canvas.getBoundingClientRect();
+   return {
+     offsetX: x - canvasRect.left,
+     offsetY: y - canvasRect.top
+   };
+ }
+
+ function changeBrushColor(color, textId) {
+   // Очищаем холст
+   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+   // Показываем текст соответствующий кнопке
+   hiddenTexts.forEach((text) => (text.style.display = 'none'));
+   const textToShow = document.getElementById(textId);
+   textToShow.style.display = 'block';
+   activeText = textToShow;
+
+   // Изменяем текущий цвет закрашивания
+   brushColor = color;
+ }
+ // Весь ваш JavaScript код остается без изменений, как и раньше
+</script>
+<script>
+ var count_particles, stats, update;
+ stats = new Stats;
+ stats.setMode(0);
+ stats.domElement.style.position = 'absolute';
+ stats.domElement.style.left = '0px';
+ stats.domElement.style.top = '0px';
+ document.body.appendChild(stats.domElement);
+ count_particles = document.querySelector('.js-count-particles');
+ update = function() {
+   stats.begin();
+   stats.end();
+   if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+     count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+   }
+   requestAnimationFrame(update);
+ };
+ requestAnimationFrame(update);
+</script>
+
+<!-- ... (ваш текущий скрипт particles.js и другие скрипты) ... -->
+
+</body>
+</html>
